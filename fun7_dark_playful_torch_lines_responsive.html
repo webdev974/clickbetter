@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dark Playful Luxury OS</title>
+<style>
+:root {
+  --bg: #070708;
+  --ink: #f4f1e8;
+  --muted: rgba(244,241,232,.58);
+  --line: rgba(244,241,232,.12);
+  --glass: rgba(255,255,255,.055);
+  --hot: #f4ff5c;
+  --pink: #ff4fd8;
+  --blue: #7cf7ff;
+  --orange: #ff8a3d;
+  --radius: 28px;
+  --mx: 50vw;
+  --my: 50vh;
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -18%;
+  z-index: -6;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,79,216,.18), transparent 0 26rem),
+    radial-gradient(circle at 86% 74%, rgba(124,247,255,.14), transparent 0 28rem),
+    radial-gradient(circle at 50% 115%, rgba(244,255,92,.10), transparent 0 34rem),
+    linear-gradient(135deg, #040405, #111014 56%, #070708);
+  filter: saturate(1.2);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--mx) var(--my), rgba(255,255,245,.30) 0 2.5rem, rgba(244,255,92,.19) 5rem, rgba(124,247,255,.11) 11rem, transparent 27rem),
+    radial-gradient(circle at var(--mx) var(--my), transparent 0 22rem, rgba(0,0,0,.70) 48rem);
+  mix-blend-mode: screen;
+}
+
+.bg-lines {
+  position: fixed;
+  inset: 0;
+  z-index: -4;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: .92;
+}
+
+.scan-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--mx) var(--my), transparent 0 18rem, rgba(0,0,0,.34) 40rem, rgba(0,0,0,.82) 78%),
+    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 4px;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: .13;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.orbit {
+  position: fixed;
+  width: 42vmax;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 50%;
+  z-index: -3;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+
+.orbit.one { left: -12vmax; top: 8vmax; }
+.orbit.two { right: -15vmax; bottom: -10vmax; animation-duration: 23s; }
+
+@keyframes drift {
+  from { transform: translate3d(-2%, 3%, 0) rotate(0deg) scale(1); }
+  to { transform: translate3d(4%, -3%, 0) rotate(22deg) scale(1.08); }
+}
+
+.cursor {
+  position: fixed;
+  left: var(--mx);
+  top: var(--my);
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  z-index: 99;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #fff 0 24%, var(--hot) 25% 45%, transparent 47%);
+  border: 1px solid rgba(255,255,255,.42);
+  box-shadow: 0 0 0 12px rgba(244,241,232,.06), 0 0 46px rgba(244,255,92,.62), 0 0 120px rgba(244,255,92,.24);
+  transition: width .2s ease, height .2s ease, background .2s ease;
+}
+
+.cursor.is-hover {
+  width: 54px;
+  height: 54px;
+  background: radial-gradient(circle, rgba(255,255,255,.92) 0 9%, rgba(244,255,92,.28) 10% 54%, rgba(255,255,255,.06) 56%);
+  backdrop-filter: blur(8px);
+}
+
+.stage {
+  width: 100%;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 4vw, 54px);
+}
+
+.card {
+  position: relative;
+  width: min(760px, calc(100vw - clamp(32px, 8vw, 108px)));
+  max-height: calc(100svh - clamp(36px, 8vw, 108px));
+  overflow: hidden;
+  padding: clamp(28px, 6vw, 62px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.035)),
+    rgba(0,0,0,.28);
+  box-shadow:
+    0 34px 100px rgba(0,0,0,.55),
+    inset 0 1px 0 rgba(255,255,255,.14);
+  backdrop-filter: blur(26px) saturate(1.3);
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,.14), transparent 0 18rem);
+  opacity: .9;
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 46px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--hot);
+  box-shadow: 0 0 18px var(--hot);
+}
+
+h1 {
+  margin: 0;
+  max-width: 11ch;
+  font-size: clamp(52px, min(10vw, 12svh), 118px);
+  line-height: .82;
+  letter-spacing: -.075em;
+  font-weight: 860;
+  text-wrap: balance;
+}
+
+h1 .acid {
+  color: var(--hot);
+  text-shadow: 0 0 36px rgba(244,255,92,.28);
+}
+
+.copy {
+  margin: 28px 0 0;
+  max-width: 54ch;
+  color: var(--muted);
+  font-size: clamp(15px, 2vw, 18px);
+  line-height: 1.65;
+}
+
+.console {
+  margin-top: 34px;
+  min-height: 56px;
+  padding: 16px 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 18px;
+  color: rgba(244,241,232,.82);
+  background: rgba(0,0,0,.26);
+  font-family: "SF Mono", "Cascadia Code", ui-monospace, monospace;
+  font-size: 13px;
+  letter-spacing: -.02em;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 34px;
+}
+
+button {
+  position: relative;
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 18px 28px;
+  cursor: none;
+  color: #080808;
+  background: var(--ink);
+  font-weight: 850;
+  letter-spacing: -.02em;
+  font-size: 15px;
+  overflow: hidden;
+  box-shadow: 0 16px 42px rgba(244,241,232,.18);
+  transform: translateZ(0);
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease;
+}
+
+button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--hot), var(--pink), var(--blue), var(--hot));
+  background-size: 280% 100%;
+  opacity: 0;
+  transition: opacity .22s ease;
+  animation: sheen 3.2s linear infinite;
+}
+
+button span { position: relative; z-index: 1; }
+
+button:hover {
+  transform: translateY(-3px) scale(1.025);
+  box-shadow: 0 24px 70px rgba(244,255,92,.18);
+}
+
+button:hover::before { opacity: 1; }
+button:active { transform: translateY(0) scale(.97); }
+
+@keyframes sheen { to { background-position: 280% 0; } }
+
+.counter {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.counter strong {
+  color: var(--ink);
+  font-size: 18px;
+  letter-spacing: -.02em;
+}
+
+.burst {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+  background: var(--hot);
+  animation: pop .65s cubic-bezier(.16,1,.3,1) forwards;
+  box-shadow: 0 0 28px currentColor;
+}
+
+@keyframes pop {
+  from { transform: translate(-50%, -50%) scale(.5); opacity: 1; }
+  to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(.1); opacity: 0; }
+}
+
+.card.hit { animation: cardHit .42s cubic-bezier(.16,1,.3,1); }
+.console.hit { animation: consoleHit .36s cubic-bezier(.16,1,.3,1); }
+
+@keyframes cardHit {
+  0% { transform: scale(1); }
+  40% { transform: scale(.992) rotate(-.2deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes consoleHit {
+  0% { transform: translateY(0); border-color: rgba(255,255,255,.10); }
+  45% { transform: translateY(-2px); border-color: rgba(244,255,92,.45); }
+  100% { transform: translateY(0); border-color: rgba(255,255,255,.10); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  body { cursor: auto; }
+  .cursor { display: none; }
+  button { cursor: pointer; }
+}
+
+@media (max-width: 760px) {
+  .card {
+    width: min(100%, calc(100vw - 28px));
+    max-height: none;
+  }
+
+  .actions {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  body { cursor: auto; }
+  .cursor { display: none; }
+  button { cursor: pointer; }
+
+  .stage {
+    min-height: 100svh;
+    padding: 14px;
+    align-items: center;
+  }
+
+  .card {
+    width: 100%;
+    padding: 28px 22px;
+    border-radius: 24px;
+  }
+
+  .eyebrow {
+    align-items: flex-start;
+    flex-direction: column;
+    margin-bottom: 34px;
+  }
+
+  h1 {
+    font-size: clamp(58px, 19vw, 86px);
+    letter-spacing: -.07em;
+  }
+
+  .copy {
+    font-size: 15px;
+  }
+
+  .console {
+    margin-top: 28px;
+  }
+
+  .actions {
+    gap: 18px;
+  }
+
+  button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-height: 720px) and (min-width: 700px) {
+  .card {
+    padding-top: 38px;
+    padding-bottom: 38px;
+  }
+
+  .eyebrow { margin-bottom: 34px; }
+  .copy { margin-top: 22px; }
+  .console { margin-top: 26px; }
+  .actions { margin-top: 30px; }
+}
+
+@media (max-height: 620px) and (min-width: 700px) {
+  .stage { align-items: start; }
+  .card { margin-block: 18px; }
+}
+</style>
+</head>
+<body>
+  <canvas class="bg-lines" id="bgLines"></canvas>
+  <div class="scan-vignette"></div>
+  <div class="noise"></div>
+  <div class="cursor" id="cursor"></div>
+
+  <main class="stage">
+    <section class="card" id="card" aria-live="polite">
+      <div class="eyebrow">
+        <span class="status">PLAYGROUND OS</span>
+        <span>confidence: unreasonable</span>
+      </div>
+
+      <h1>click<br><span class="acid">better.</span></h1>
+      <p class="copy">Une micro-interface qui te juge un peu, te récompense beaucoup, et refuse poliment d’être banale.</p>
+
+      <div class="console" id="console">&gt; en attente d’un geste courageux_</div>
+
+      <div class="actions">
+        <button id="btn" type="button"><span>provoquer l’interface</span></button>
+        <div class="counter">clicks&nbsp;&nbsp;<strong id="count">0</strong></div>
+      </div>
+    </section>
+  </main>
+
+<script>
+const root = document.documentElement;
+const cursor = document.getElementById('cursor');
+const button = document.getElementById('btn');
+const card = document.getElementById('card');
+const countEl = document.getElementById('count');
+const consoleEl = document.getElementById('console');
+
+const bgCanvas = document.getElementById('bgLines');
+const bgCtx = bgCanvas.getContext('2d');
+let vw = 0;
+let vh = 0;
+let dpr = Math.min(window.devicePixelRatio || 1, 2);
+let pointer = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+let smoothPointer = { ...pointer };
+
+function resizeBg() {
+  vw = window.innerWidth;
+  vh = window.innerHeight;
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  bgCanvas.width = Math.floor(vw * dpr);
+  bgCanvas.height = Math.floor(vh * dpr);
+  bgCanvas.style.width = vw + 'px';
+  bgCanvas.style.height = vh + 'px';
+  bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+function drawWaves(time = 0) {
+  const t = time * 0.001;
+  smoothPointer.x += (pointer.x - smoothPointer.x) * 0.095;
+  smoothPointer.y += (pointer.y - smoothPointer.y) * 0.095;
+
+  bgCtx.clearRect(0, 0, vw, vh);
+  bgCtx.lineCap = 'round';
+  bgCtx.lineJoin = 'round';
+
+  const spacing = Math.max(48, Math.min(82, vw / 18));
+  const amplitude = Math.max(14, Math.min(34, vw / 46));
+  const rows = Math.ceil(vh / spacing) + 5;
+  const cols = Math.ceil(vw / 18) + 4;
+  const lightRadius = Math.min(420, Math.max(260, vw * 0.28));
+
+  for (let r = -2; r < rows; r++) {
+    const baseY = r * spacing + Math.sin(t * .45 + r) * 8;
+    bgCtx.beginPath();
+
+    for (let c = -2; c < cols; c++) {
+      const x = c * 18;
+      const dx = x - smoothPointer.x;
+      const dy = baseY - smoothPointer.y;
+      const dist = Math.hypot(dx, dy);
+      const influence = Math.max(0, 1 - dist / lightRadius);
+      const wave = Math.sin(x * .012 + r * .85 + t * 1.55) * amplitude;
+      const torchPull = Math.sin(dist * .018 - t * 4.0) * influence * 28;
+      const y = baseY + wave + torchPull;
+      if (c === -2) bgCtx.moveTo(x, y);
+      else bgCtx.lineTo(x, y);
+    }
+
+    const lit = Math.max(0, 1 - Math.abs(baseY - smoothPointer.y) / lightRadius);
+    bgCtx.strokeStyle = `rgba(244,241,232,${0.045 + lit * 0.18})`;
+    bgCtx.lineWidth = 1 + lit * 1.15;
+    bgCtx.stroke();
+  }
+
+  const track = (t * 90) % (vw + 220) - 110;
+  const trackRow = Math.floor(rows * .48 + Math.sin(t * .38) * rows * .18);
+  const baseY = trackRow * spacing + Math.sin(t * .45 + trackRow) * 8;
+  const beadY = baseY + Math.sin(track * .012 + trackRow * .85 + t * 1.55) * amplitude;
+  const hue = (t * 92) % 360;
+
+  const glow = bgCtx.createRadialGradient(track, beadY, 0, track, beadY, 80);
+  glow.addColorStop(0, `hsla(${hue}, 100%, 72%, .95)`);
+  glow.addColorStop(.22, `hsla(${(hue + 70) % 360}, 100%, 64%, .52)`);
+  glow.addColorStop(1, `hsla(${hue}, 100%, 60%, 0)`);
+  bgCtx.fillStyle = glow;
+  bgCtx.beginPath();
+  bgCtx.arc(track, beadY, 82, 0, Math.PI * 2);
+  bgCtx.fill();
+
+  bgCtx.fillStyle = `hsl(${hue}, 100%, 70%)`;
+  bgCtx.shadowColor = `hsl(${(hue + 55) % 360}, 100%, 64%)`;
+  bgCtx.shadowBlur = 28;
+  bgCtx.beginPath();
+  bgCtx.arc(track, beadY, 5.5, 0, Math.PI * 2);
+  bgCtx.fill();
+  bgCtx.shadowBlur = 0;
+
+  const torch = bgCtx.createRadialGradient(smoothPointer.x, smoothPointer.y, 0, smoothPointer.x, smoothPointer.y, lightRadius * .72);
+  torch.addColorStop(0, 'rgba(255,255,235,.13)');
+  torch.addColorStop(.18, 'rgba(244,255,92,.09)');
+  torch.addColorStop(1, 'rgba(244,255,92,0)');
+  bgCtx.fillStyle = torch;
+  bgCtx.beginPath();
+  bgCtx.arc(smoothPointer.x, smoothPointer.y, lightRadius * .72, 0, Math.PI * 2);
+  bgCtx.fill();
+
+  requestAnimationFrame(drawWaves);
+}
+requestAnimationFrame(drawWaves);
+
+
+let count = 0;
+const lines = [
+  '> ok. là, ça commence à ressembler à quelque chose.',
+  '> interaction acceptée. ego légèrement augmenté.',
+  '> encore ? audacieux. inutile. donc parfait.',
+  '> l’interface a cligné des yeux. personne n’a vu.',
+  '> boss mode ? presque. continue de cliquer.',
+  '> micro-dose de chaos injectée avec goût.',
+  '> système stable. personnalité instable.',
+  '> tu viens de rendre ce bouton beaucoup trop confiant.'
+];
+
+const accents = ['#f4ff5c', '#ff4fd8', '#7cf7ff', '#ff8a3d', '#c4ff7c'];
+
+window.addEventListener('pointermove', (event) => {
+  pointer.x = event.clientX;
+  pointer.y = event.clientY;
+  root.style.setProperty('--mx', event.clientX + 'px');
+  root.style.setProperty('--my', event.clientY + 'px');
+});
+
+button.addEventListener('pointerenter', () => cursor.classList.add('is-hover'));
+button.addEventListener('pointerleave', () => cursor.classList.remove('is-hover'));
+
+function burst(x, y, color) {
+  for (let i = 0; i < 18; i++) {
+    const dot = document.createElement('span');
+    dot.className = 'burst';
+    dot.style.left = x + 'px';
+    dot.style.top = y + 'px';
+    dot.style.color = color;
+    dot.style.background = color;
+    const angle = (Math.PI * 2 * i) / 18;
+    const distance = 52 + Math.random() * 88;
+    dot.style.setProperty('--dx', Math.cos(angle) * distance + 'px');
+    dot.style.setProperty('--dy', Math.sin(angle) * distance + 'px');
+    document.body.appendChild(dot);
+    dot.addEventListener('animationend', () => dot.remove());
+  }
+}
+
+button.addEventListener('click', () => {
+  count += 1;
+  const accent = accents[count % accents.length];
+  root.style.setProperty('--hot', accent);
+  countEl.textContent = count;
+  consoleEl.textContent = lines[Math.floor(Math.random() * lines.length)];
+
+  card.classList.remove('hit');
+  consoleEl.classList.remove('hit');
+  void card.offsetWidth;
+  card.classList.add('hit');
+  consoleEl.classList.add('hit');
+
+  const rect = button.getBoundingClientRect();
+  burst(rect.left + rect.width / 2, rect.top + rect.height / 2, accent);
+});
+</script>
+</body>
+</html>
